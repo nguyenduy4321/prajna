@@ -15,7 +15,7 @@ TO DO
 - In customer messages, only one string per character length is allowed for some reason
 
 CONFIGURATION 
-- Change color of the rain in script.js, by assigning variable "colorrain" a number that corresonds with the color:
+- Change color of the rain in script.js, by assigning variable "colorrain" a number that corresponds with the color:
 ```
 bluerain = 207;
 var colorrain = bluerain;
@@ -30,6 +30,7 @@ Live examples:
  * [Green Matrix 4](https://janemiceli.github.io/matrix4)
  * [Rainbow Matrix](https://janemiceli.github.io/matrixrainbow)
  * [Rainbow Matrix 4](https://janemiceli.github.io/matrix4rainbow)
+
 - Change the messages/words that appear in the rain by using all CAPS and assign to array "messages"
 ```
 const messages = ["ALPHA", "BETA", "GAMMA"]
