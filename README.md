@@ -7,7 +7,7 @@ Matrix code rain
 </p>
 
 
-**See live demo [here](https://janemiceli.github.io/matrix/)**
+**See live demo [here](https://nguyenduy4321.github.io/prajna/)**
 
 *Matrix* font is from [here](http://www.dafont.com/matrix-code-nfi.font).
 
@@ -20,16 +20,6 @@ CONFIGURATION
 bluerain = 207;
 var colorrain = bluerain;
 ```
-Live examples:
- * [Pink](https://janemiceli.github.io/Happy_birthday_aria/)
- * [Orange](https://janemiceli.github.io/susanbauter/)
- * [Yellow](https://janemiceli.github.io/Happy_birthday_connor/)
- * [Green](https://janemiceli.github.io/matrix_tim/)
- * [Blue](https://janemiceli.github.io/matrix)
- * [Purple](https://janemiceli.github.io/Happy_birthday_angie/)
- * [Green Matrix 4](https://janemiceli.github.io/matrix4)
- * [Rainbow Matrix](https://janemiceli.github.io/matrixrainbow)
- * [Rainbow Matrix 4](https://janemiceli.github.io/matrix4rainbow)
 
 - Change the messages/words that appear in the rain by using all CAPS and assign to array "messages"
 ```
