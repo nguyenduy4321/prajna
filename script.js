@@ -1,4 +1,39 @@
-const messages = ["TIM ", "ARIA ","CONNOR ", "JANE  ", "MICELI  "]
+const messages = [
+  "QUÁN TỰ TẠI",
+  "BÁT NHÃ",
+  "NGŨ UẨN",
+  "KHÔNG",
+  "XÁ LỢI TỬ",
+  "SẮC",
+  "THỌ TƯỞNG HÀNH THỨC",
+  "KHÔNG TƯỚNG",
+  "BẤT SINH BẤT DIỆT",
+  "BẤT CẤU BẤT TỊNH",
+  "BẤT TĂNG BẤT GIẢM",
+  "VÔ SẮC",
+  "VÔ NHÃN NHĨ TỶ THIỆT THÂN Ý",
+  "VÔ SẮC THANH HƯƠNG VỊ XÚC PHÁP",
+  "VÔ VÔ MINH",
+  "VÔ LÃO TỬ",
+  "VÔ KHỔ TẬP DIỆT ĐẠO",
+  "VÔ TRÍ",
+  "VÔ ĐẮC",
+  "BỒ ĐỀ TÁT ĐỎA",
+  "VÔ QUÁI NGẠI",
+  "VÔ HỮU KHỦNG BỐ",
+  "NIẾT BÀN",
+  "TAM THẾ CHƯ PHẬT",
+  "A NẬU ĐA LA TAM MIỆU TAM BỒ ĐỀ",
+  "ĐẠI THẦN CHÚ",
+  "ĐẠI MINH CHÚ",
+  "VÔ THƯỢNG CHÚ",
+  "VÔ ĐẲNG ĐẲNG CHÚ",
+  "CHÂN THẬT BẤT HƯ",
+  "YẾT ĐẾ",
+  "BA LA YẾT ĐẾ",
+  "BA LA TĂNG YẾT ĐẾ",
+  "BỒ ĐỀ TÁT BÀ HA"
+];
 
 var pinkrain = 0;
 var orangerain = 25
