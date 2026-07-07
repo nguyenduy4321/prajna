@@ -41,8 +41,9 @@ var yellowrain = 50;
 var greenrain = 104;
 var bluerain = 207;
 var purplerain = 255;
+var goldrain = 45;
 
-var colorrain = bluerain;
+var colorrain = goldrain;
 
 
 var M = {
@@ -158,6 +159,9 @@ var M = {
                 var randomMsgIndex = M.randomFromInterval(0, messages.length - 1);
                 var selectedMessage = messages[randomMsgIndex];
                 var codeLength = selectedMessage.length + 1;
+                
+                // Xóa các ký tự cũ của cột này để tránh bị trộn chữ
+                M.codes[column] = [ M.codes[column][0] ];
                 
                 M.codes[column][0].position = {'x': (column * M.settings.COL_WIDTH), 'y': 0};
                 M.codes[column][0].velocity = codeVelocity;

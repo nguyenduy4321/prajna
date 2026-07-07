@@ -12,6 +12,21 @@
 		<!--a href="https://github.com/janemiceli/matrix" id="ribbon"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 50;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a -->
 		<script src="script.js"></script>
 		<link rel="stylesheet" href="style.css">
+		<div style="position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0;">
+            <iframe id="bgMusic" width="10" height="10" src="https://www.youtube.com/embed/5hfbD2j5Re0?autoplay=1&loop=1&playlist=5hfbD2j5Re0" frameborder="0" allow="autoplay"></iframe>
+        </div>
+        <script>
+            let hasInteracted = false;
+            document.body.addEventListener('pointerdown', () => {
+                if (!hasInteracted) {
+                    hasInteracted = true;
+                    // Trigger iframe reload to bypass autoplay restriction upon first interaction
+                    let iframe = document.getElementById('bgMusic');
+                    let src = iframe.src;
+                    iframe.src = src;
+                }
+            });
+        </script>
     </body>
 </html>
 	
