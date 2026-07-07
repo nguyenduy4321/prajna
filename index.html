@@ -1,16 +1,188 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
-	<head>
-        <meta charset="utf-8">	
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Prajna Matrix</title>
-        <link id="favicon" rel="icon" type="image/png" href="">
-		<link rel="stylesheet" href="style.css">
-	</head>
-	<body>
-		<canvas id="canvas">Your browser doesn't support "canvas", sorry come again.</canvas>
-        <canvas id="favicon-canvas" width="32" height="32" style="display:none;"></canvas>
-		<script src="script.js"></script>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tự Tại Sống - Immersive Music</title>
+    <link id="favicon" rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAWklEQVR42mNkoBAwgoi/QKzMQC3wH48eQ5DkYwY8CjABQ5oBIM3YFGCzAZ9mbAqw2YBPMykG4NKMTzMhBfhMI1mAz3QKDeBTTCnAZxohzYTcT7iMIM0kGAAAAAD//wMAqD8H938+ZlQAAAAASUVORK5CYII=">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        /* Fullscreen cover video container */
+        .video-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 56.25vw; /* 16:9 Aspect Ratio (9/16 = 0.5625) */
+            min-height: 100vh;
+            min-width: 177.77vh; /* 16:9 Aspect Ratio (16/9 = 1.7777) */
+            pointer-events: none; /* Disable interaction with youtube iframe to hide UI completely */
+            z-index: 1;
+        }
+
+        .video-background iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Interaction layer sitting on top */
+        #interaction-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #instruction {
+            color: rgba(255, 255, 255, 0.7);
+            font-family: sans-serif;
+            font-size: 1.2rem;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 8px;
+            pointer-events: none;
+            transition: opacity 1s;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="video-background">
+        <div id="player"></div>
+    </div>
+    
+    <div id="interaction-layer">
+        <div id="instruction">Chạm màn hình để phát nhạc<br>Chạm đúp để đổi bài hát</div>
+    </div>
+
+    <script>
+        // List of video IDs from @tutaisong
+        const videoIds = [
+            'F_w7TaKtE3I', 'G7d1H-AV5hU', 'JqjRSmJ1ElM', '9Mr-a-Qr76Q', 'dT8GEjZ3j64', 
+            'uL1RC-W8DEI', '73y3k_fYgD8', 'QfTHY-ZbA6U', 'wdbvaknGt7o', 'AoGdSgKKeO4', 
+            'CJMePffaPAM', '18-ANLjC6so', 'q4BU-EuFjt4', '-GNZpn3nPiY', 'UshU4s3z-_k', 
+            'dOE7y7_tVOU', 'H3PWas1_9e0', '8sN7iLOoRxo', 'rOZulWtU8ds', '9v5cN4aqh0o',
+            '5hfbD2j5Re0'
+        ];
+
+        let player;
+        let isPlaying = false;
+        
+        // Load YouTube IFrame API
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        function onYouTubeIframeAPIReady() {
+            let randomId = videoIds[Math.floor(Math.random() * videoIds.length)];
+            player = new YT.Player('player', {
+                videoId: randomId,
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'iv_load_policy': 3,
+                    'modestbranding': 1,
+                    'rel': 0,
+                    'showinfo': 0,
+                    'playsinline': 1,
+                    'mute': 0 
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange,
+                    'onError': onPlayerError
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            event.target.setPlaybackQuality('hd1080');
+            // Attempt to play (might be blocked by browser policy until interaction)
+            event.target.playVideo();
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                document.getElementById('instruction').style.opacity = '0';
+            }
+            if (event.data === YT.PlayerState.ENDED) {
+                playRandomVideo();
+            }
+        }
+        
+        function onPlayerError(event) {
+            // If video is unavailable, skip to next
+            playRandomVideo();
+        }
+
+        function playRandomVideo() {
+            let randomId = videoIds[Math.floor(Math.random() * videoIds.length)];
+            player.loadVideoById({'videoId': randomId, 'suggestedQuality': 'hd1080'});
+        }
+
+        // Handle Double Click and Interaction to bypass autoplay blocks
+        let lastTapTime = 0;
+        document.getElementById('interaction-layer').addEventListener('pointerdown', function(e) {
+            const currentTime = Date.now();
+            const tapLength = currentTime - lastTapTime;
+            
+            if (player && typeof player.playVideo === 'function') {
+                if (player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                    player.playVideo();
+                }
+            }
+
+            if (tapLength < 400 && tapLength > 0) {
+                // Double tap detected
+                playRandomVideo();
+                // Show brief feedback
+                const inst = document.getElementById('instruction');
+                inst.innerHTML = "Đang đổi bài hát...";
+                inst.style.opacity = '1';
+                setTimeout(() => {
+                    if (isPlaying) inst.style.opacity = '0';
+                }, 2000);
+            }
+            lastTapTime = currentTime;
+        });
+        
+        // Handle native double click for desktop
+        document.getElementById('interaction-layer').addEventListener('dblclick', function(e) {
+             playRandomVideo();
+             const inst = document.getElementById('instruction');
+             inst.innerHTML = "Đang đổi bài hát...";
+             inst.style.opacity = '1';
+             setTimeout(() => {
+                 if (isPlaying) inst.style.opacity = '0';
+             }, 2000);
+        });
+
+    </script>
+</body>
 </html>
-	
