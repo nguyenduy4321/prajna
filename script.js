@@ -151,53 +151,29 @@ var M = {
         createCode: function () {
             "use strict";
             clearTimeout(M.createCodeLoop);
-            var randomInterval = M.randomFromInterval(0, 100), column = M.assignColumn(), codeLength = 0, i = 0, reverseString = "";
+            var randomInterval = M.randomFromInterval(0, 100), column = M.assignColumn();
             if (column) {
-                var codeVelocity = (Math.random() * (M.settings.VELOCITY_PARAMS.max - M.settings.VELOCITY_PARAMS.min)) + M.settings.VELOCITY_PARAMS.min, lettersLength = M.letters.length, newLetter = 0;
-                codeLength = M.randomFromInterval(M.settings.CODE_LENGTH_PARAMS.min, M.settings.CODE_LENGTH_PARAMS.max);
-                    
-                //if ( M.codesCounter%2 == 0 ){
-                    M.codes[column][0].position = {'x': (column * M.settings.COL_WIDTH), 'y': 0};
-                    M.codes[column][0].velocity = codeVelocity;
-                    M.codes[column][0].strength = M.codes[column][0].velocity / M.settings.VELOCITY_PARAMS.max;
-                //}else{
-                   // M.codes[column][0].position = {'x': (column * M.settings.COL_WIDTH), 'y': 0};
-                    //M.codes[column][0].velocity = -codeVelocity;
-                    //M.codes[column][0].strength = (M.codes[column][0].velocity * -1) / M.settings.VELOCITY_PARAMS.max;
-                //}
-                M.CheckArray(codeLength, messages, column, lettersLength)
+                var codeVelocity = (Math.random() * (M.settings.VELOCITY_PARAMS.max - M.settings.VELOCITY_PARAMS.min)) + M.settings.VELOCITY_PARAMS.min;
+                
+                var randomMsgIndex = M.randomFromInterval(0, messages.length - 1);
+                var selectedMessage = messages[randomMsgIndex];
+                var codeLength = selectedMessage.length + 1;
+                
+                M.codes[column][0].position = {'x': (column * M.settings.COL_WIDTH), 'y': 0};
+                M.codes[column][0].velocity = codeVelocity;
+                M.codes[column][0].strength = M.codes[column][0].velocity / M.settings.VELOCITY_PARAMS.max;
+                
+                M.insertCustomMessages(codeLength, selectedMessage, column);
                 M.createCanvii(column);
                 M.codesCounter += 1;
             }
             M.createCodeLoop = setTimeout(M.createCode, randomInterval);
-        },
-        CheckArray: function (codeLength, messages, column, lettersLength) {
-            "use strict";
-            var messageLengths = [];
-            messages.forEach(message => {messageLengths.push(message.length)});
-            messages.forEach(item => {
-                if (item.length == codeLength - 1) {
-                    M.insertCustomMessages(codeLength, item, column);
-                } else {
-                    M.randomMessage(codeLength, column, lettersLength, messageLengths);
-                }
-            });
         },
         insertCustomMessages: function (codeLength, message, column) {
             "use strict";
             for (var i = 1; i <= codeLength; i = i + 1) {
                 var reverseString = message.split('').reverse().join('');
                 M.codes[column][i] = reverseString.substring(i - 1, i);
-            }
-        },
-        randomMessage:function (codeLength, column, lettersLength, messageLengths){
-            "use strict";
-            if(messageLengths.includes(codeLength - 1)){
-                return;
-            }
-            for (var i = 1; i <= codeLength; i = i + 1) {
-                var newLetter = M.randomFromInterval(0, (lettersLength - 1));
-                M.codes[column][i] = M.letters[newLetter];
             }
         },
         createCanvii: function (i) {
